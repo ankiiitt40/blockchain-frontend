@@ -1,1 +1,2 @@
-export const API_BASE = "http://localhost:5000/api";
+export const API_BASE = "https://blockchain-backend-edli.onrender.com/api";
+
