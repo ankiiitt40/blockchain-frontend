@@ -11,10 +11,11 @@ const Dashboard = () => {
   const [balance, setBalance] = useState(0);
   const [depositRequests, setDepositRequests] = useState([]);
   const [withdrawRequests, setWithdrawRequests] = useState([]);
+  const [history, setHistory] = useState([]); // ⭐ NEW — Payment History
 
-  // -------------------------------------
-  // 🟢 AUTO LOAD BALANCE EVERY 5 SECONDS
-  // -------------------------------------
+  // ---------------------------
+  // 🟢 AUTO LOAD BALANCE
+  // ---------------------------
   useEffect(() => {
     const fetchBalance = () => {
       fetch(`${API_BASE}/balance`)
@@ -23,15 +24,14 @@ const Dashboard = () => {
         .catch(err => console.log("Balance error:", err));
     };
 
-    fetchBalance();                // initial load
-    const interval = setInterval(fetchBalance, 5000); // auto refresh
-
+    fetchBalance();
+    const interval = setInterval(fetchBalance, 5000);
     return () => clearInterval(interval);
   }, []);
 
-  // ------------------------------------------
-  // 🟡 FETCH DEPOSIT REQUESTS
-  // ------------------------------------------
+  // ---------------------------
+  // 🟡 DEPOSIT REQUESTS
+  // ---------------------------
   useEffect(() => {
     const loadDeposits = () => {
       fetch(`${API_BASE}/deposits`)
@@ -41,14 +41,13 @@ const Dashboard = () => {
     };
 
     loadDeposits();
-    const interval = setInterval(loadDeposits, 8000); // refresh every 8 sec
-    
+    const interval = setInterval(loadDeposits, 8000);
     return () => clearInterval(interval);
   }, []);
 
-  // ------------------------------------------
-  // 🔵 FETCH WITHDRAWAL REQUESTS
-  // ------------------------------------------
+  // ---------------------------
+  // 🔵 WITHDRAWAL REQUESTS
+  // ---------------------------
   useEffect(() => {
     const loadWithdrawals = () => {
       fetch(`${API_BASE}/withdrawals`)
@@ -59,7 +58,22 @@ const Dashboard = () => {
 
     loadWithdrawals();
     const interval = setInterval(loadWithdrawals, 8000);
+    return () => clearInterval(interval);
+  }, []);
 
+  // ---------------------------
+  // 🟣 PAYMENT HISTORY (ALL TRANSACTIONS)
+  // ---------------------------
+  useEffect(() => {
+    const loadHistory = () => {
+      fetch(`${API_BASE}/transactions`)
+        .then(res => res.json())
+        .then(data => setHistory(data))
+        .catch(err => console.log("History error:", err));
+    };
+
+    loadHistory();
+    const interval = setInterval(loadHistory, 8000);
     return () => clearInterval(interval);
   }, []);
 
@@ -120,10 +134,50 @@ const Dashboard = () => {
         <StatsCard title="Disputed WDR" value="0.00" />
       </div>
 
-      {/* 🔥 LIVE DATA FROM BACKEND */}
+      {/* LIVE DATA */}
       <SectionBox title={`Deposit Requests - (${depositRequests.length})`} />
       <SectionBox title={`Withdrawal Requests - (${withdrawRequests.length})`} />
-      
+
+
+      {/* ⭐ PAYMENT HISTORY SECTION */}
+      <div className="mt-4 p-4 bg-gray-900 text-white rounded-lg shadow">
+        <h2 className="text-lg font-bold mb-3">
+          Payment History ({history.length})
+        </h2>
+
+        {history.length === 0 ? (
+          <p className="opacity-50">No transactions found.</p>
+        ) : (
+          <div className="flex flex-col gap-3">
+            {history.map((t) => (
+              <div
+                key={t._id}
+                className="p-3 bg-gray-800 rounded-lg border border-gray-700"
+              >
+                <p><b>Amount:</b> {t.amount} USDT</p>
+                <p><b>Network:</b> {t.network}</p>
+                <p className="break-all"><b>Hash:</b> {t.txHash}</p>
+                <p>
+                  <b>Status:</b>{" "}
+                  <span
+                    className={
+                      t.status === "confirmed"
+                        ? "text-green-400"
+                        : "text-yellow-300"
+                    }
+                  >
+                    {t.status}
+                  </span>
+                </p>
+                <p className="text-sm opacity-50">
+                  {new Date(t.createdAt).toLocaleString()}
+                </p>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
     </div>
   );
 };
