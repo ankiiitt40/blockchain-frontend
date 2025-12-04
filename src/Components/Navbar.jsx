@@ -6,20 +6,22 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="flex items-center justify-between px-4 py-4 bg-[#2A2A2A] text-white">
+    <div className="flex items-center justify-between px-4 py-4 bg-[#1F1F1F] text-white shadow-md">
 
       {/* Left Menu Icon */}
-      <Menu size={24} />
+      <Menu size={26} className="cursor-pointer" />
 
-      {/* Brand Name */}
-      <div className="text-xl font-semibold flex items-center gap-2">
-        <span className="text-blue-400">B2B Gaming</span>
+      {/* Center Text Brand */}
+      <div className="flex-1 flex justify-center">
+        <h1 className="text-2xl font-bold tracking-wide text-white">
+          FUNDMATE
+        </h1>
       </div>
 
-      {/* Deposit Button */}
+      {/* Right Deposit Button */}
       <button
         onClick={() => navigate("/deposit")}
-        className="bg-green-500 px-3 py-1 text-sm rounded-lg hover:bg-green-600 transition"
+        className="bg-green-600 px-4 py-1.5 text-sm rounded-lg text-white hover:bg-green-700 transition font-semibold"
       >
         Deposit
       </button>
@@ -28,3 +30,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
