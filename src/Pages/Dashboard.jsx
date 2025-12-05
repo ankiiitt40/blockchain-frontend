@@ -4,6 +4,7 @@ import QuickLinkCard from "../Components/QuickLinkCard";
 import SectionBox from "../Components/SectionBox";
 import { Banknote, Building2, Wallet, Lock, Clock } from "lucide-react";
 
+
 // BACKEND BASE URL
 const API_BASE = "http://localhost:5000/api";
 
@@ -109,10 +110,12 @@ const Dashboard = () => {
 
       {/* 🟡 Quick Links */}
       <div className="flex justify-between text-center py-2">
-        <QuickLinkCard 
-          label="Bank Accounts" 
-          icon={<Building2 className="text-green-400" />} 
-        />
+       <QuickLinkCard 
+  label="Bank Accounts" 
+  icon={<Building2 className="text-green-400" />}
+  onClick={() => (window.location.href = "/banks")}
+/>
+
         <QuickLinkCard 
           label="Deposit Requests" 
           icon={<Wallet className="text-yellow-400" />} 

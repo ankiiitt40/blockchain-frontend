@@ -1,8 +1,13 @@
-const QuickLinkCard = ({ icon, label }) => {
+const QuickLinkCard = ({ label, icon, onClick }) => {
   return (
-    <div className="flex flex-col items-center text-white">
-      <div className="p-3 rounded-full bg-[#2A2A2A]">{icon}</div>
-      <span className="text-sm mt-1">{label}</span>
+    <div
+      onClick={onClick}
+      className="flex flex-col items-center cursor-pointer"
+    >
+      <div className="w-12 h-12 flex items-center justify-center rounded-full bg-gray-800">
+        {icon}
+      </div>
+      <p className="text-sm mt-1">{label}</p>
     </div>
   );
 };

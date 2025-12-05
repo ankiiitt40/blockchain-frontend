@@ -6,6 +6,7 @@ import Transactions from "./Pages/Transaction";
 import Withdrawal from "./Pages/Withdrawal";
 import AdminPanel from "./Pages/AdminPanel";
 import FloatingButtons from "./Components/FloatingButtons";
+import Bank from "./pages/Bank";
 
 function App() {
   return (
@@ -25,6 +26,8 @@ function App() {
 
         {/* Withdrawal Page */}
         <Route path="/withdraw" element={<Withdrawal />} />
+
+         <Route path="/banks" element={<Bank />} />
 
         {/* Admin Panel */}
         <Route path="/admin" element={<AdminPanel />} />
